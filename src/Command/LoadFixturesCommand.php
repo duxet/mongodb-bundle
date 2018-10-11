@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 
 namespace Facile\MongoDbBundle\Command;
 
@@ -27,8 +27,7 @@ class LoadFixturesCommand extends AbstractCommand
         $this
             ->setName('mongodb:fixtures:load')
             ->addArgument('addFixturesPath', InputArgument::OPTIONAL, 'Add a path to search in for fixtures files')
-            ->setDescription('Load fixtures and applies them');
-        ;
+            ->setDescription('Load fixtures and applies them');;
     }
 
     protected function initialize(InputInterface $input, OutputInterface $output)
@@ -53,7 +52,7 @@ class LoadFixturesCommand extends AbstractCommand
         $fixtures = $this->loader->getLoadedClasses();
         if (empty($fixtures)) {
             throw new \InvalidArgumentException(
-                sprintf('Could not find any class to load in: %s', "\n\n- ".implode("\n- ", $paths))
+                sprintf('Could not find any class to load in: %s', "\n\n- " . implode("\n- ", $paths))
             );
         }
 
@@ -64,22 +63,13 @@ class LoadFixturesCommand extends AbstractCommand
         $this->io->writeln(sprintf('Done, loaded %d fixtures files', \count($fixtures)));
     }
 
-    /**
-     * @param MongoFixtureInterface $indexList
-     */
     private function loadFixture(MongoFixtureInterface $indexList)
     {
         $indexList->loadData();
         $indexList->loadIndexes();
-        $this->io->writeln('Loaded fixture: '. \get_class($indexList));
+        $this->io->writeln('Loaded fixture: ' . \get_class($indexList));
     }
 
-    /**
-     * @param InputInterface    $input
-     * @param KernelInterface   $kernel
-     *
-     * @return array
-     */
     protected function prepareSearchPaths(InputInterface $input, KernelInterface $kernel): array
     {
         $paths = [];
@@ -89,16 +79,13 @@ class LoadFixturesCommand extends AbstractCommand
         }
 
         foreach ($kernel->getBundles() as $bundle) {
-            $paths[] = $bundle->getPath().'/DataFixtures/Mongo';
+            $paths[] = $bundle->getPath() . '/DataFixtures/Mongo';
         }
 
         return $paths;
     }
 
-    /**
-     * @param array $paths
-     */
-    protected function loadPaths($paths)
+    protected function loadPaths(array $paths)
     {
         foreach ($paths as $path) {
             if (is_dir($path)) {

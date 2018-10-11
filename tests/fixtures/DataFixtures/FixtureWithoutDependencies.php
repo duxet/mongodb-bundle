@@ -4,9 +4,10 @@ namespace Facile\MongoDbBundle\Tests\fixtures\DataFixtures;
 
 use Facile\MongoDbBundle\Capsule\Database;
 use Facile\MongoDbBundle\Fixtures\AbstractContainerAwareFixture;
+use Facile\MongoDbBundle\Fixtures\DependentFixtureInterface;
 use Facile\MongoDbBundle\Fixtures\MongoFixtureInterface;
 
-class TestFixtures extends AbstractContainerAwareFixture implements MongoFixtureInterface
+class FixtureWithoutDependencies extends AbstractContainerAwareFixture implements MongoFixtureInterface, DependentFixtureInterface
 {
     public function loadData()
     {
@@ -27,6 +28,11 @@ class TestFixtures extends AbstractContainerAwareFixture implements MongoFixture
 
     public function collection(): string
     {
-        return 'testFixturesCollection';
+        return 'fixtureWithoutDependenciesCollection';
+    }
+
+    public function getDependencies(): array
+    {
+        return [];
     }
 }
