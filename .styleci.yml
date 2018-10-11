@@ -1,14 +1,14 @@
 preset: symfony
 
 disabled:
-  - blank_line_before_declare
-  - declare_equal_normalize
+- blank_line_before_declare
+- declare_equal_normalize
 
 finder:
   exclude:
-    - "tests"
+  - "tests"
   name:
-    - "*.php"
+  - "*.php"
   not-name:
-    - "*Stub.php"
+  - "*Stub.php"
 

@@ -2,8 +2,8 @@
 
 namespace Facile\MongoDbBundle\Command;
 
-use Facile\MongoDbBundle\Fixtures\MongoFixturesLoader;
 use Facile\MongoDbBundle\Fixtures\MongoFixtureInterface;
+use Facile\MongoDbBundle\Fixtures\MongoFixturesLoader;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

@@ -1,20 +1,19 @@
-
 filter:
-    excluded_paths:
-        - 'vendor/*'
-        - 'docker/*'
-        - 'tests/*'
-        - 'docs/*'
-        - 'bin/*'
+  excluded_paths:
+  - 'vendor/*'
+  - 'docker/*'
+  - 'tests/*'
+  - 'docs/*'
+  - 'bin/*'
 
 checks:
-    php: true
+  php: true
 
 coding_style:
-    php:
-        spaces:
-            before_keywords:
-                catch: false
+  php:
+    spaces:
+      before_keywords:
+        catch: false
 
 tools:
-    external_code_coverage: true
+  external_code_coverage: true

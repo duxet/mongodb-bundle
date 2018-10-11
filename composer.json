@@ -1,48 +1,56 @@
 {
-    "name": "facile-it/mongodb-bundle",
-    "description": "Bundle service integration of official [mongodb/mongo-php-library](https://github.com/mongodb/mongo-php-library) driver library",
-    "keywords": ["MongoDB", "Symfony", "Database"],
-    "type": "symfony-bundle",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Ilario Pierbattista",
-            "email": "pierbattista.ilario@gmail.com"
-        },
-        {
-            "name": "Alessandro Galli",
-            "email": "a.galli85@gmail.com"
-        }
-    ],
-    "require": {
-        "php" : "^7.0",
-        "ext-mongodb": "^1.1.5",
-        "mongodb/mongodb": "^1.0",
-        "symfony/framework-bundle": "^2.8 || ^3.0 || ^4.0"
+  "name": "facile-it/mongodb-bundle",
+  "description": "Bundle service integration of official [mongodb/mongo-php-library](https://github.com/mongodb/mongo-php-library) driver library",
+  "keywords": [
+    "MongoDB",
+    "Symfony",
+    "Database"
+  ],
+  "type": "symfony-bundle",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Ilario Pierbattista",
+      "email": "pierbattista.ilario@gmail.com"
     },
-    "require-dev": {
-        "matthiasnoback/symfony-dependency-injection-test": "^2.3",
-        "symfony/web-profiler-bundle": "^2.8 || ^3.0 || ^4.0",
-        "symfony/console": "^2.8 || ^3.0 || ^4.0",
-        "phpunit/phpunit": "^6.0"
-    },
-    "minimum-stability": "stable",
-    "suggest": {
-        "symfony/web-profiler-bundle": "Enables profiling of mongodb queries",
-        "symfony/console": "Enables console commands"
-    },
-    "autoload": {
-        "psr-4": { "Facile\\MongoDbBundle\\": "src/" }
-    },
-    "autoload-dev": {
-        "psr-4": { "Facile\\MongoDbBundle\\Tests\\": "tests/" }
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "0.x-dev"
-        }
-    },
-    "config": {
-        "bin-dir": "bin"
+    {
+      "name": "Alessandro Galli",
+      "email": "a.galli85@gmail.com"
     }
+  ],
+  "require": {
+    "php": "^7.0",
+    "ext-mongodb": "^1.1.5",
+    "mongodb/mongodb": "^1.0",
+    "symfony/framework-bundle": "^2.8 || ^3.0 || ^4.0"
+  },
+  "require-dev": {
+    "matthiasnoback/symfony-dependency-injection-test": "^2.3",
+    "symfony/web-profiler-bundle": "^2.8 || ^3.0 || ^4.0",
+    "symfony/console": "^2.8 || ^3.0 || ^4.0",
+    "phpunit/phpunit": "^6.0"
+  },
+  "minimum-stability": "stable",
+  "suggest": {
+    "symfony/web-profiler-bundle": "Enables profiling of mongodb queries",
+    "symfony/console": "Enables console commands"
+  },
+  "autoload": {
+    "psr-4": {
+      "Facile\\MongoDbBundle\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Facile\\MongoDbBundle\\Tests\\": "tests/"
+    }
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "0.x-dev"
+    }
+  },
+  "config": {
+    "bin-dir": "bin"
+  }
 }

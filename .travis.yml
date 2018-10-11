@@ -1,72 +1,72 @@
 language: php
 cache:
   directories:
-    - $HOME/.composer/cache/files
+  - $HOME/.composer/cache/files
 
 matrix:
   fast_finish: true
   include:
-    - php: '7.0'
-      env:
-        - MONGO_EXT_VERSION="1.1.5"
-    - php: '7.0'
-      env:
-        - MONGO_EXT_VERSION="1.2.0"
-    - php: '7.0'
-      env:
-        - MONGO_EXT_VERSION="1.3.0"
-        - TEST_COVERAGE=true
-    - php: '7.0'
-      env:
-        - MONGO_EXT_VERSION="1.4.2"
-    - php: '7.0'
-      env:
-        - SYMFONY=2.8.*
-    - php: '7.0'
-      env:
-        - SYMFONY=3.4.*
-    - php: '7.1'
-      env:
-        - SYMFONY=4.*
-    - php: '7.1'
-      env:
-        - SYMFONY=dev-master
-    - php: '7.0'
-      env:
-        -COMPOSER_FLAGS="--prefer-lowest"
-    - php: '7.1'
-    - php: '7.2'
+  - php: '7.0'
+    env:
+    - MONGO_EXT_VERSION="1.1.5"
+  - php: '7.0'
+    env:
+    - MONGO_EXT_VERSION="1.2.0"
+  - php: '7.0'
+    env:
+    - MONGO_EXT_VERSION="1.3.0"
+    - TEST_COVERAGE=true
+  - php: '7.0'
+    env:
+    - MONGO_EXT_VERSION="1.4.2"
+  - php: '7.0'
+    env:
+    - SYMFONY=2.8.*
+  - php: '7.0'
+    env:
+    - SYMFONY=3.4.*
+  - php: '7.1'
+    env:
+    - SYMFONY=4.*
+  - php: '7.1'
+    env:
+    - SYMFONY=dev-master
+  - php: '7.0'
+    env:
+      -COMPOSER_FLAGS="--prefer-lowest"
+  - php: '7.1'
+  - php: '7.2'
 
   allow_failures:
-    - env:
-        - SYMFONY=dev-master
+  - env:
+    - SYMFONY=dev-master
 
 before_install:
-  - phpenv config-rm xdebug.ini
-  - composer self-update
-  - if [ "$SYMFONY" != "" ]; then composer require "symfony/symfony:${SYMFONY}" --no-update; fi;
+- phpenv config-rm xdebug.ini
+- composer self-update
+- if [ "$SYMFONY" != "" ]; then composer require "symfony/symfony:${SYMFONY}" --no-update; fi;
 
 install:
-  - wget http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-3.0.14.tgz
-  - tar xzf mongodb-linux-x86_64-3.0.14.tgz
-  - ${PWD}/mongodb-linux-x86_64-3.0.14/bin/mongod --version
-  - if [ "$MONGO_EXT_VERSION" != "" ]; then pecl install -f mongodb-${MONGO_EXT_VERSION}; fi;
-  - if [ "$MONGO_EXT_VERSION" = "" ]; then echo "extension=mongodb.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi;
-  - mkdir --parents "${HOME}/bin"
-  - composer update --prefer-dist --prefer-stable --no-interaction ${COMPOSER_FLAGS}
+- wget http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-3.0.14.tgz
+- tar xzf mongodb-linux-x86_64-3.0.14.tgz
+- ${PWD}/mongodb-linux-x86_64-3.0.14/bin/mongod --version
+- if [ "$MONGO_EXT_VERSION" != "" ]; then pecl install -f mongodb-${MONGO_EXT_VERSION}; fi;
+- if [ "$MONGO_EXT_VERSION" = "" ]; then echo "extension=mongodb.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi;
+- mkdir --parents "${HOME}/bin"
+- composer update --prefer-dist --prefer-stable --no-interaction ${COMPOSER_FLAGS}
 
 before_script:
-  - echo "zend_extension=xdebug.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-  - mkdir ${PWD}/mongodb-linux-x86_64-3.0.14/data
-  - ${PWD}/mongodb-linux-x86_64-3.0.14/bin/mongod --dbpath ${PWD}/mongodb-linux-x86_64-3.0.14/data --logpath ${PWD}/mongodb-linux-x86_64-3.0.14/mongodb.log --fork
+- echo "zend_extension=xdebug.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+- mkdir ${PWD}/mongodb-linux-x86_64-3.0.14/data
+- ${PWD}/mongodb-linux-x86_64-3.0.14/bin/mongod --dbpath ${PWD}/mongodb-linux-x86_64-3.0.14/data --logpath ${PWD}/mongodb-linux-x86_64-3.0.14/mongodb.log --fork
 
 script:
-  - composer validate
-  - bin/phpunit -c ./phpunit.xml.dist --coverage-clover=./build/coverage/coverage.clover
+- composer validate
+- bin/phpunit -c ./phpunit.xml.dist --coverage-clover=./build/coverage/coverage.clover
 
 after_success:
-  - if [[ $TEST_COVERAGE ]]; then wget https://scrutinizer-ci.com/ocular.phar --output-document="${HOME}/bin/ocular" && chmod +x "${HOME}/bin/ocular"; fi
-  - if [[ $TEST_COVERAGE ]]; then ocular code-coverage:upload --format=php-clover ./build/coverage/coverage.clover; fi
+- if [[ $TEST_COVERAGE ]]; then wget https://scrutinizer-ci.com/ocular.phar --output-document="${HOME}/bin/ocular" && chmod +x "${HOME}/bin/ocular"; fi
+- if [[ $TEST_COVERAGE ]]; then ocular code-coverage:upload --format=php-clover ./build/coverage/coverage.clover; fi
 
 notifications:
   on_success: never

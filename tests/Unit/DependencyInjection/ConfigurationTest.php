@@ -4,7 +4,6 @@ namespace Facile\MongoDbBundle\Tests\unit\DependencyInjection;
 
 use Facile\MongoDbBundle\DependencyInjection\Configuration;
 use Facile\MongoDbBundle\DependencyInjection\MongoDbBundleExtension;
-use Matthias\SymfonyConfigTest\PhpUnit\ProcessedConfigurationEqualsConstraint;
 use Matthias\SymfonyDependencyInjectionTest\Loader\ExtensionConfigurationBuilder;
 use Matthias\SymfonyDependencyInjectionTest\Loader\LoaderFactory;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionConfigurationTestCase;
