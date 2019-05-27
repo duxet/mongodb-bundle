@@ -1,77 +1,86 @@
-language: php
+dist: trusty
+language: minimal
+services:
+  - docker
 
 cache:
   directories:
-    - $HOME/.composer/cache/files
+    - vendor
 
 git:
-  depth: 3
+  depth: 1
+
+env:
+  matrix:
+    - PHP_IMG="base-7.0-mongoext-1.1.5" MONGO_IMG="mongo:3.0" SYMFONY="2.8.*"
+    - PHP_IMG="base-7.1-mongoext-1.1.5" MONGO_IMG="mongo:3.0"
+    - PHP_IMG="base-7.1-mongoext-1.1.5" MONGO_IMG="mongo:3.2"
+    - PHP_IMG="base-7.0-mongoext-1.2.0" MONGO_IMG="mongo:3.0"
+    - PHP_IMG="base-7.1-mongoext-1.2.0" MONGO_IMG="mongo:3.0"
+    - PHP_IMG="base-7.1-mongoext-1.2.0" MONGO_IMG="mongo:3.2"
+    - PHP_IMG="base-7.1-mongoext-1.2.0" MONGO_IMG="mongo:3.4"
+    - PHP_IMG="base-7.0-mongoext-1.3.0" MONGO_IMG="mongo:3.2" SYMFONY="3.4.*"
+    - PHP_IMG="base-7.0-mongoext-1.3.0" MONGO_IMG="mongo:3.4" TEST_COVERAGE=1
+    - PHP_IMG="base-7.1-mongoext-1.3.0" MONGO_IMG="mongo:3.2" SYMFONY="4.*"
+    - PHP_IMG="base-7.1-mongoext-1.3.0" MONGO_IMG="mongo:3.4" SYMFONY="dev-master"
+    - PHP_IMG="base-7.2-mongoext-1.3.0" MONGO_IMG="mongo:3.2"
+    - PHP_IMG="base-7.2-mongoext-1.3.0" MONGO_IMG="mongo:3.4"
+    - PHP_IMG="base-7.0-mongoext-1.3.4" MONGO_IMG="mongo:3.2"
+    - PHP_IMG="base-7.0-mongoext-1.3.4" MONGO_IMG="mongo:3.4"
+    - PHP_IMG="base-7.1-mongoext-1.3.4" MONGO_IMG="mongo:3.2"
+    - PHP_IMG="base-7.1-mongoext-1.3.4" MONGO_IMG="mongo:3.4"
+    - PHP_IMG="base-7.2-mongoext-1.3.4" MONGO_IMG="mongo:3.2"
+    - PHP_IMG="base-7.2-mongoext-1.3.4" MONGO_IMG="mongo:3.4"
+    - PHP_IMG="base-7.0-mongoext-1.4.2" MONGO_IMG="mongo:3.6"
+    - PHP_IMG="base-7.1-mongoext-1.4.2" MONGO_IMG="mongo:3.4"
+    - PHP_IMG="base-7.1-mongoext-1.4.2" MONGO_IMG="mongo:3.6"
+    - PHP_IMG="base-7.2-mongoext-1.4.2" MONGO_IMG="mongo:3.4"
+    - PHP_IMG="base-7.2-mongoext-1.4.2" MONGO_IMG="mongo:3.6"
+    - PHP_IMG="base-7.0-mongoext-1.5.3" MONGO_IMG="mongo:4.0"
+    - PHP_IMG="base-7.1-mongoext-1.5.3" MONGO_IMG="mongo:3.6"
+    - PHP_IMG="base-7.1-mongoext-1.5.3" MONGO_IMG="mongo:4.0"
+    - PHP_IMG="base-7.2-mongoext-1.5.3" MONGO_IMG="mongo:3.6"
+    - PHP_IMG="base-7.2-mongoext-1.5.3" MONGO_IMG="mongo:4.0"
+    - PHP_IMG="base-7.2-mongoext-1.5.3" MONGO_IMG="percona/percona-server-mongodb:4.0"
+    - PHP_IMG="base-7.3-mongoext-1.5.3" MONGO_IMG="mongo:3.6"
+    - PHP_IMG="base-7.3-mongoext-1.5.3" MONGO_IMG="mongo:4.0"
+    - PHP_IMG="base-7.3-mongoext-1.5.3" MONGO_IMG="percona/percona-server-mongodb:4.0"
 
 matrix:
   fast_finish: true
-  include:
-    - php: '7.0'
-      env:
-        - MONGO_EXT_VERSION="1.1.5"
-    - php: '7.0'
-      env:
-        - MONGO_EXT_VERSION="1.2.0"
-    - php: '7.0'
-      env:
-        - MONGO_EXT_VERSION="1.3.0"
-        - TEST_COVERAGE=true
-    - php: '7.0'
-      env:
-        - MONGO_EXT_VERSION="1.4.2"
-    - php: '7.0'
-      env:
-        - SYMFONY=2.8.*
-    - php: '7.0'
-      env:
-        - SYMFONY=3.4.*
-    - php: '7.1'
-      env:
-        - SYMFONY=4.*
-    - php: '7.1'
-      env:
-        - SYMFONY=dev-master
-    - php: '7.0'
-      env:
-        -COMPOSER_FLAGS="--prefer-lowest"
-    - php: '7.1'
-    - php: '7.2'
-
   allow_failures:
-    - env:
-        - SYMFONY=dev-master
-
-before_install:
-  - phpenv config-rm xdebug.ini
-  - composer self-update
-  - if [ "$SYMFONY" != "" ]; then composer require "symfony/symfony:${SYMFONY}" --no-update; fi;
+    - env: PHP_IMG="base-7.1-mongoext-1.3.0" MONGO_IMG="mongo:3.4" SYMFONY="dev-master"
 
 install:
-  - wget http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-3.0.14.tgz
-  - tar xzf mongodb-linux-x86_64-3.0.14.tgz
-  - ${PWD}/mongodb-linux-x86_64-3.0.14/bin/mongod --version
-  - if [ "$MONGO_EXT_VERSION" != "" ]; then pecl install -f mongodb-${MONGO_EXT_VERSION}; fi;
-  - if [ "$MONGO_EXT_VERSION" = "" ]; then echo "extension=mongodb.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi;
-  - mkdir --parents "${HOME}/bin"
-  - composer update --prefer-dist --prefer-stable --no-interaction ${COMPOSER_FLAGS}
-
-before_script:
-  - echo "zend_extension=xdebug.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-  - mkdir ${PWD}/mongodb-linux-x86_64-3.0.14/data
-  - ${PWD}/mongodb-linux-x86_64-3.0.14/bin/mongod --dbpath ${PWD}/mongodb-linux-x86_64-3.0.14/data --logpath ${PWD}/mongodb-linux-x86_64-3.0.14/mongodb.log --fork
+  - rm docker-compose.yml
+  - mv docker-compose.travis.yml docker-compose.yml
+  - sudo chmod -R 777 . # ugly! Travis is 2000:2000
+  - |
+    if [ "$SYMFONY" != "" ]; then
+      if [[ "$SYMFONY" = "dev-master" ]]; then
+        docker-compose run --no-deps --rm php-cli composer config minimum-stability dev
+      fi;
+      docker-compose run --no-deps --rm php-cli composer require "symfony/symfony:${SYMFONY}" --no-update;
+    fi;
+  - docker-compose run --no-deps --rm php-cli composer install --prefer-dist --no-interaction ${COMPOSER_FLAGS}
 
 script:
-  - composer validate
-  - bin/phpunit -c ./phpunit.xml.dist --coverage-clover=./build/coverage/coverage.clover
+  - docker-compose run --no-deps --rm php-cli composer validate
+  - |
+    if [[ "$TEST_COVERAGE" = "1" ]]; then
+      docker-compose run --rm php-cli bash -c "sleep 3; bin/phpunit -c phpunit.xml.dist --coverage-clover=./build/coverage/coverage.clover"
+    else
+      docker-compose run --rm php-cli bash -c "sleep 3; bin/phpunit -c phpunit.xml.dist"
+    fi
 
 after_success:
-  - if [[ $TEST_COVERAGE ]]; then wget https://scrutinizer-ci.com/ocular.phar --output-document="${HOME}/bin/ocular" && chmod +x "${HOME}/bin/ocular"; fi
-  - if [[ $TEST_COVERAGE ]]; then ocular code-coverage:upload --format=php-clover ./build/coverage/coverage.clover; fi
+  - |
+    if [[ "$TEST_COVERAGE" = "1" ]]; then
+      wget https://scrutinizer-ci.com/ocular.phar --output-document="${HOME}/bin/ocular"; \
+      chmod +x "${HOME}/bin/ocular"; \
+      ocular code-coverage:upload --format=php-clover ./build/coverage/coverage.clover
+    fi
 
 notifications:
-  on_success: never
-  on_failure: always
+  on_success: change
+  on_failure: change

@@ -18,8 +18,8 @@ final class Configuration implements ConfigurationInterface
     {
         $readPreferenceValidOptions = ['primary', 'primaryPreferred', 'secondary', 'secondaryPreferred', 'nearest'];
 
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('mongo_db_bundle');
+        $treeBuilder = new TreeBuilder('mongo_db_bundle');
+        $rootNode = $treeBuilder->getRootNode();
         $rootNode
             ->children()
                 ->booleanNode('data_collection')->defaultTrue()->info('Disables Data Collection if needed')
